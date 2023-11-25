@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: BSD-2-Clause -->
+<!-- Copyright (c) 2005-2008 Poul-Henning Kamp -->
+<!-- Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com> -->
 # fifolog
 
 compact round-robin circular storage
