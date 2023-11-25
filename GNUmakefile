@@ -31,11 +31,11 @@
 SHELL   := $(shell env PATH="$$(command -p getconf PATH)" command -v sh)
 LIBSRC  := $(strip $(wildcard lib/*.c) $(wildcard util/*.c))
 LTOFLAG ?= -flto=auto
-CFLAGS  += -Ilib -Iutil -O3 $(LTOFLAG)
+CFLAGS  += -Wall -Ilib -Iutil -O3 $(LTOFLAG)
 LDFLAGS += $(LTOFLAG)
 
 ifeq ($(USE_MINIZ),1)
-  CFLAGS += -Iminiz -DUSE_MINIZ=1
+  CFLAGS += -Iminiz -DUSE_MINIZ=1 -DMINIZ_NO_TIME=1 -DMINIZ_NO_STDIO=1
   LIBSRC += miniz/miniz.c
 else
   LDFLAGS += -lz

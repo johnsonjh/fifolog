@@ -47,8 +47,8 @@ fifolog_create(const char *fn, off_t size, ssize_t recsize)
 {
         int i, fd;
         ssize_t u;
-        u_int uu;
-        off_t ms;
+        u_int uu = 0;
+        off_t ms = 0;
         struct stat st;
         char *buf;
         int created;
