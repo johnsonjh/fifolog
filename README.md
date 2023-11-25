@@ -23,7 +23,8 @@
 ## NAME
 
 `fifolog_create`, `fifolog_writer`, `fifolog_reader` — <br>
-    initialize, write, seek and extract data from a *fifolog*
+&nbsp;&nbsp;&nbsp;&nbsp; initialize, write, seek
+and extract data from a *fifolog*
 
 ## SYNOPSIS
 
@@ -138,17 +139,23 @@ using a line such as this in `syslog.conf`(`5`):
 ## HISTORY
 
 The *fifolog* tools have been liberated from an open source SCADA
-applications called “measured”, which monitors and controls
+application called “*measured*”, which monitors and controls
 remote radio navigation transmitters for the Danish Air Traffic
 Control system.
 
 ## BUILD
 
-* Using *GNU Make* and system zlib:
+Portable *fifolog* is known to build and work on FreeBSD, macOS,
+and GNU/Linux systems.
+
+* Build using *GNU Make* and system zlib:<br>
   `make`
 
-* Using *GNU Make* and bundled miniz:
+* Build using *GNU Make* and bundled miniz:<br>
   `make USE_MINIZ=1`
+
+* Test compiled binaries:<br>
+  `make test`
 
 ## AUTHORS
 
