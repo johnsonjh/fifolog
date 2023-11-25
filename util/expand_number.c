@@ -33,7 +33,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#include <sys/cdefs.h>
 #include <sys/types.h>
 #if defined(__FreeBSD__)
 # include <libutil.h>
