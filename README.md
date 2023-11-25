@@ -142,8 +142,8 @@ Control system.
 ## BUILD
 
 Portable *fifolog* is known to build and work on AIX, FreeBSD, macOS,
-Solaris, illumos, and Linux systems using GCC, Clang, NVIDIA HPC SDK C,
-IBM XL C, IBM Open XL C, and CompCert-C.
+Solaris, illumos, Haiku, and Linux systems using GCC, Clang,
+NVIDIA HPC SDK C, IBM XL C, IBM Open XL C, and CompCert-C.
 
 * Build using *GNU Make* and system zlib:<br>
   `make`

@@ -28,7 +28,6 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-SHELL   := $(shell sh -c 'env PATH="$$(command -p getconf PATH)" command -v sh')
 LIBSRC  := $(strip $(wildcard lib/*.c) $(wildcard util/*.c))
 LTOFLAG ?= -flto=auto
 CFLAGS  += -Wall -Ilib -Iutil -O3 -DNDEBUG -D_FILE_OFFSET_BITS=64 $(LTOFLAG)
