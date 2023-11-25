@@ -38,6 +38,7 @@
 #include <sysexits.h>
 #include <regex.h>
 #include <errno.h>
+#include <getopt.h>
 
 #include "libfifolog.h"
 

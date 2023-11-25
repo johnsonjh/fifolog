@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <getopt.h>
 #if defined(__FreeBSD__)
 # include <libutil.h>
 #endif

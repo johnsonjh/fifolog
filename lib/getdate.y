@@ -638,7 +638,11 @@ Convert(time_t Month, time_t Day, time_t Year,
         return -1;
     Julian += tod;
     ltm = localtime(&Julian);
-fprintf(stderr, "DST %d TZ %s %d\n", DSTmode, ltm->tm_zone, ltm->tm_isdst);
+#if !defined(__COMPCERT__)
+    fprintf(stderr, "DST %d TZ %s %d\n", DSTmode, ltm->tm_zone, ltm->tm_isdst);
+#else
+    fprintf(stderr, "DST %d %d\n", DSTmode, ltm->tm_isdst);
+#endif
     if (DSTmode == DSTon
      || (DSTmode == DSTmaybe && localtime(&Julian)->tm_isdst))
         Julian -= 60 * 60;
@@ -865,7 +869,9 @@ get_date(char *p)
     yyYear       = tm->tm_year + 1900;
     yyMonth      = tm->tm_mon + 1;
     yyDay        = tm->tm_mday;
+#if !defined(__COMPCERT__)
     yyTimezone   = tm->tm_gmtoff;
+#endif
     yyDSTmode    = DSTmaybe;
     yyHour       = 0;
     yyMinutes    = 0;
