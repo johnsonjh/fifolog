@@ -31,7 +31,7 @@
 SHELL   := $(shell env PATH="$$(command -p getconf PATH)" command -v sh)
 LIBSRC  := $(strip $(wildcard lib/*.c) $(wildcard util/*.c))
 LTOFLAG ?= -flto=auto
-CFLAGS  += -Wall -Ilib -Iutil -O3 -DNDEBUG $(LTOFLAG)
+CFLAGS  += -Wall -Ilib -Iutil -O3 -DNDEBUG -D_FILE_OFFSET_BITS=64 $(LTOFLAG)
 LDFLAGS += $(LTOFLAG)
 
 ifeq ($(USE_MINIZ),1)
