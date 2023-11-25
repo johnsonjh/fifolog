@@ -102,7 +102,7 @@ main(int argc, char * const *argv)
         } else if (size != 0 && reccnt == 0 && recsize == 0) {  /* N Z Z */
                 recsize = DEF_RECSIZE;
                 if (size % recsize)
-                    errx(1, "-s arg not divisible by %jd", recsize);
+                    errx(1, "-s arg not divisible by %llu", (long long)recsize);
         } else if (size == 0 && reccnt != 0 && recsize != 0) {  /* Z N N */
                 size = reccnt * recsize;
         } else if (size == 0 && reccnt != 0 && recsize == 0) {  /* Z N Z */
