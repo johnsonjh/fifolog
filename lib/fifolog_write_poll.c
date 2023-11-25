@@ -394,7 +394,7 @@ int
 fifolog_write_record_poll(struct fifolog_writer *f, uint32_t id, time_t now,
     const void *ptr, ssize_t len)
 {
-        u_int l;
+        unsigned int l;
         const unsigned char *p;
         int retval = 0;
 
