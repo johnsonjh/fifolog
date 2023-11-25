@@ -69,8 +69,8 @@ out/src/getdate.c: lib/getdate.y
 	 { command -v yacc  > /dev/null 2>&1 && "$$(command -v yacc)" -o $@ $<; } || \
 	 { printf '%s\n' "*** Error: yacc $< failed."; exit 1; }
 
-.PHONY: test
-test:
+.PHONY: check test
+check test:
 	@test -f out/bin/fifolog_create || \
 	 { printf '%s\n' "*** Error: Missing fifolog_create."; exit 1; }
 	@test -f out/bin/fifolog_reader || \
@@ -93,6 +93,6 @@ test:
 	@printf '%s\n' "" || true
 	@printf '%s\n' "*** Tests completed successfully." || true
 
-.PHONY: clean
-clean:
+.PHONY: clean distclean
+clean distclean:
 	rm -rf ./out > /dev/null 2>&1 || true
