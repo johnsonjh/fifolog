@@ -58,7 +58,6 @@ Render(void *priv, time_t now, unsigned flag, const unsigned char *p, unsigned l
         char buf[128];
         int i;
 
-        (void)i;
         if (now < opt_B || now > opt_E)
                 return;
 
@@ -71,6 +70,7 @@ Render(void *priv, time_t now, unsigned flag, const unsigned char *p, unsigned l
                 (void)gmtime_r(&now, &utc);
                 i = strftime(buf, sizeof buf, opt_T, &utc);
                 assert(i > 0);
+                (void)i;
                 fprintf(fo, "%s %s\n", buf, p);
         } else {
                 fprintf(fo, "%12ld %s\n", (long)now, p);
