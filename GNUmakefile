@@ -79,7 +79,6 @@ check test:
 	 { printf '%s\n' "*** Error: Missing fifolog_writer."; exit 1; }
 	@rm -rf ./out/test
 	@mkdir -p out/test
-	@printf '%s\n' "" || true
 	out/bin/fifolog_create -s 10M out/test/test.log && test -f out/test/test.log
 	ls -l out/test/test.log
 	@printf '%s\n' "" || true
