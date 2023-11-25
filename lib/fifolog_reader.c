@@ -212,7 +212,7 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
 static unsigned char *
 fifolog_reader_chop(struct fifolog_reader *fr, fifolog_reader_render_t *func, void *priv)
 {
-        u_char *p, *q;
+        unsigned char *p, *q;
         uint32_t v, w, u;
 
         p = fr->obuf;

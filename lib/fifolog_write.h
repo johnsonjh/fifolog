@@ -57,11 +57,11 @@ struct fifolog_writer {
         time_t                          last;
 
         ssize_t                         obufsize;
-        u_char                          *obuf;
+        unsigned char                   *obuf;
 
         ssize_t                         ibufsize;
         ssize_t                         ibufptr;
-        u_char                          *ibuf;
+        unsigned char                   *ibuf;
 
         time_t                          starttime;
         time_t                          lastwrite;

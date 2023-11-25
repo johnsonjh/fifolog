@@ -368,7 +368,7 @@ fifolog_write_record(struct fifolog_writer *f, uint32_t id, time_t now,
                 bufl += 4;
         }
         if (id & FIFOLOG_LENGTH)
-                buf[bufl++] = (u_char)len;
+                buf[bufl++] = (unsigned char)len;
 
         if (bufl + len + f->ibufptr > f->ibufsize)
                 return (0);
