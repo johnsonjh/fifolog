@@ -147,9 +147,8 @@ Solaris, illumos, Haiku, Cygwin, and Linux (glibc, musl, uClibc-ng,
 Bionic) systems using GCC, Clang, NVIDIA HPC SDK C, IBM XL C, IBM
 Open XL C, and CompCert-C.
 
-GNU Bison or Berkeley Yacc is required.
-
-Review the [GNUmakefile](GNUmakefile) for complete details.
+GNU Bison (or Berkeley Yacc) is required.  Review the
+[GNUmakefile](GNUmakefile) for details.
 
 * Build using *GNU Make* and system zlib:<br>
   `make`
