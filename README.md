@@ -3,7 +3,9 @@
 <!-- Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com> -->
 # fifolog
 
-* *fifolog*: compact round-robin circular storage
+*fifolog*: compact round-robin circular storage
+
+---
 
 <!-- toc -->
 
