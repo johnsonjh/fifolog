@@ -64,6 +64,7 @@ fifolog_reader_open(const char *fname)
         struct fifolog_reader *fr;
         int i;
 
+        (void)i;
         fr = calloc(1, sizeof(*fr));
         if (fr == NULL) {
                 fprintf(stderr, "Error: Cannot malloc: %s\n", strerror(errno));

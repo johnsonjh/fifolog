@@ -57,6 +57,7 @@ Render(void *priv, time_t now, unsigned flag, const unsigned char *p, unsigned l
         char buf[128];
         int i;
 
+        (void)i;
         if (now < opt_B || now > opt_E)
                 return;
 
