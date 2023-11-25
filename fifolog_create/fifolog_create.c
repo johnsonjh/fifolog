@@ -57,9 +57,9 @@ int
 main(int argc, char * const *argv)
 {
         int ch;
-        int64_t size;
-        int64_t recsize;
-        int64_t reccnt;
+        uint64_t size;
+        uint64_t recsize;
+        uint64_t reccnt;
         const char *s;
 
         recsize = 0;
