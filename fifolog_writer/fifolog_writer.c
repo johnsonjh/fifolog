@@ -32,12 +32,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sysexits.h>
-#include <err.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <assert.h>
 #include <poll.h>
 #include <string.h>
+#include <errno.h>
 #if !defined(USE_MINIZ)
 # include <zlib.h>
 #else
@@ -97,8 +97,10 @@ main(int argc, char * const *argv)
         assert(f != NULL);
 
         es = fifolog_write_open(f, argv[0], w_opt, s_opt, z_opt);
-        if (es)
-                err(1, "Error: %s", es);
+        if (es) {
+                fprintf(stderr, "Error: %s: %s\n", es, strerror(errno));
+                exit(1);
+        }
 
         while (1) {
                 pfd[0].fd = 0;

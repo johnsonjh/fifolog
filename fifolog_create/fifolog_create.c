@@ -33,7 +33,8 @@
 #include <stdlib.h>
 #include <sysexits.h>
 #include <unistd.h>
-#include <err.h>
+#include <errno.h>
+#include <string.h>
 #if defined(__FreeBSD__)
 # include <libutil.h>
 #endif
@@ -68,16 +69,22 @@ main(int argc, char * const *argv)
         while((ch = getopt(argc, argv, "l:r:s:")) != -1) {
                 switch (ch) {
                 case 'l':
-                        if (expand_number(optarg, &recsize))
-                                err(1, "Couldn't parse -l argument");
+                        if (expand_number(optarg, &recsize)) {
+                                fprintf(stderr, "Error: Couldn't parse -l argument\n");
+                                exit(1);
+                        }
                         break;
                 case 'r':
-                        if (expand_number(optarg, &reccnt))
-                                err(1, "Couldn't parse -r argument");
+                        if (expand_number(optarg, &reccnt)) {
+                                fprintf(stderr, "Error: Couldn't parse -r argument\n");
+                                exit(1);
+                        }
                         break;
                 case 's':
-                        if (expand_number(optarg, &size))
-                                err(1, "Couldn't parse -s argument");
+                        if (expand_number(optarg, &size)) {
+                                fprintf(stderr, "Error: Couldn't parse -s argument\n");
+                                exit(1);
+                        }
                         break;
                 default:
                         usage();
@@ -89,20 +96,28 @@ main(int argc, char * const *argv)
                 usage();
 
         if (size != 0 && reccnt != 0 && recsize != 0) {         /* N N N */
-                if (size !=  reccnt * recsize)
-                        errx(1, "Inconsistent -l, -r and -s values");
+                if (size !=  reccnt * recsize) {
+                        fprintf(stderr, "Error: Inconsistent -l, -r and -s values\n");
+                        exit(1);
+                }
         } else if (size != 0 && reccnt != 0 && recsize == 0) {  /* N N Z */
-                if (size % reccnt)
-                        errx(1,
-                            "Inconsistent -r and -s values (gives remainder)");
+                if (size % reccnt) {
+                        fprintf(stderr,
+                            "Error: Inconsistent -r and -s values (gives remainder)\n");
+                        exit(1);
+                }
                 recsize = size / reccnt;
         } else if (size != 0 && reccnt == 0 && recsize != 0) {  /* N Z N */
-                if (size % recsize)
-                    errx(1, "-s arg not divisible by -l arg");
+                if (size % recsize) {
+                    fprintf(stderr, "Error: -s arg not divisible by -l arg\n");
+                    exit(1);
+                }
         } else if (size != 0 && reccnt == 0 && recsize == 0) {  /* N Z Z */
                 recsize = DEF_RECSIZE;
-                if (size % recsize)
-                    errx(1, "-s arg not divisible by %llu", (long long)recsize);
+                if (size % recsize) {
+                    fprintf(stderr, "Error: -s arg not divisible by %llu\n", (long long)recsize);
+                    exit(1);
+                }
         } else if (size == 0 && reccnt != 0 && recsize != 0) {  /* Z N N */
                 size = reccnt * recsize;
         } else if (size == 0 && reccnt != 0 && recsize == 0) {  /* Z N Z */
@@ -118,5 +133,6 @@ main(int argc, char * const *argv)
         s = fifolog_create(argv[0], size, recsize);
         if (s == NULL)
                 return (0);
-        err(1, "%s", s);
+        fprintf(stderr, "Error: %s: %s\n", s, strerror(errno));
+        exit(1);
 }

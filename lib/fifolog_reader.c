@@ -32,10 +32,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
-#include <err.h>
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
+#include <errno.h>
 #if !defined(USE_MINIZ)
 # include <zlib.h>
 #else
@@ -65,16 +65,22 @@ fifolog_reader_open(const char *fname)
         int i;
 
         fr = calloc(1, sizeof(*fr));
-        if (fr == NULL)
-                err(1, "Cannot malloc");
+        if (fr == NULL) {
+                fprintf(stderr, "Error: Cannot malloc: %s\n", strerror(errno));
+                exit(1);
+        }
 
         retval = fifolog_int_open(&fr->ff, fname, 0);
-        if (retval != NULL)
-                err(1, "%s", retval);
+        if (retval != NULL) {
+                fprintf(stderr, "Error: %s: %s\n", retval, strerror(errno));
+                exit(1);
+        }
 
         fr->obuf = calloc(16, fr->ff->recsize);
-        if (fr->obuf == NULL)
-                err(1, "Cannot malloc");
+        if (fr->obuf == NULL) {
+                fprintf(stderr, "Error: Cannot malloc: %s\n", strerror(errno));
+                exit(1);
+        }
         fr->olen = fr->ff->recsize * 16;
 
         i = inflateInit(fr->ff->zs);
@@ -102,8 +108,10 @@ fifolog_reader_findsync(const struct fifolog_file *ff, off_t *o)
 
         assert(*o < ff->logsize);
         e = fifolog_int_read(ff, *o);
-        if (e)
-                err(1, "Read error (%d) while looking for SYNC", e);
+        if (e) {
+                fprintf(stderr, "Error: Read error (%d) while looking for SYNC: %s\n", e, strerror(errno));
+                exit(1);
+        }
         seq = be32dec(ff->recbuf);
         if (*o == 0 && seq == 0)
                 return (0);
@@ -117,8 +125,10 @@ fifolog_reader_findsync(const struct fifolog_file *ff, off_t *o)
                 if (*o == ff->logsize)
                         return (2); /* wraparound */
                 e = fifolog_int_read(ff, *o);
-                if (e)
-                        err(1, "Read error (%d) while looking for SYNC", e);
+                if (e) {
+                        fprintf(stderr, "Error: Read error (%d) while looking for SYNC: %s\n", e, strerror(errno));
+                        exit(1);
+                }
                 seqs = be32dec(ff->recbuf);
                 if (seqs != seq)
                         return (3); /* End of log */
@@ -159,8 +169,10 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
         if (t > t0) {
                 /* Check if there is a second older part we can use */
                 retval = fifolog_int_findend(fr->ff, &s);
-                if (retval != NULL)
-                        err(1, "%s", retval);
+                if (retval != NULL) {
+                        fprintf(stderr, "Error: %s: %s\n", retval, strerror(errno));
+                        exit(1);
+                }
                 s++;
                 e = fifolog_reader_findsync(fr->ff, &s);
                 if (e == 0)
@@ -264,8 +276,10 @@ fifolog_reader_process(struct fifolog_reader *fr, off_t from, fifolog_reader_ren
         lseq = 0;
         while (1) {
                 e = fifolog_int_read(fr->ff, o);
-                if (e)
-                        err(1, "Read error (%d)", e);
+                if (e) {
+                        fprintf(stderr, "Error: Read error (%d): %s\n", e, strerror(errno));
+                        exit(1);
+                }
                 if (++o >= fr->ff->logsize)
                         o = 0;
                 seq = be32dec(fr->ff->recbuf);

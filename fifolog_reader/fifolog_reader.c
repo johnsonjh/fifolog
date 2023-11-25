@@ -32,12 +32,12 @@
 #include <stdio.h>
 #include <assert.h>
 #include <unistd.h>
-#include <err.h>
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sysexits.h>
 #include <regex.h>
+#include <errno.h>
 
 #include "libfifolog.h"
 
@@ -110,16 +110,20 @@ main(int argc, char * const *argv)
                         break;
                 case 'B':
                         opt_B = get_date(optarg);
-                        if (opt_B == -1)
-                                errx(1, "Didn't understand \"%s\"", optarg);
+                        if (opt_B == -1) {
+                                fprintf(stderr, "Error: Didn't understand \"%s\"\n", optarg);
+                                exit(1);
+                        }
                         break;
                 case 'e':
                         opt_E = strtoul(optarg, NULL, 0);
                         break;
                 case 'E':
                         opt_E = get_date(optarg);
-                        if (opt_E == -1)
-                                errx(1, "Didn't understand \"%s\"", optarg);
+                        if (opt_E == -1) {
+                                fprintf(stderr, "Error: Didn't understand \"%s\"\n", optarg);
+                                exit(1);
+                        }
                         break;
                 case 'o':
                         opt_o = optarg;
@@ -155,8 +159,10 @@ main(int argc, char * const *argv)
 
         fprintf(stderr, "From\t%jd %s", (intmax_t)opt_B, ctime(&opt_B));
         fprintf(stderr, "To\t%jd %s", (intmax_t)opt_E, ctime(&opt_E));
-        if (opt_B >= opt_E)
-                errx(1, "Begin time not before End time");
+        if (opt_B >= opt_E) {
+                fprintf(stderr, "Error: Begin time not before End time\n");
+                exit(1);
+        }
 
         fl = fifolog_reader_open(argv[0]);
 
@@ -164,8 +170,10 @@ main(int argc, char * const *argv)
                 fo = stdout;
         else {
                 fo = fopen(opt_o, "w");
-                if (fo == NULL)
-                        err(1, "Cannot open: %s", argv[1]);
+                if (fo == NULL) {
+                        fprintf(stderr, "Error: Cannot open: %s: %s\n", argv[1], strerror(errno));
+                        exit(1);
+                }
         }
 
         o = fifolog_reader_seek(fl, opt_B);
