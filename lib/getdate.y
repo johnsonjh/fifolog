@@ -638,7 +638,7 @@ Convert(time_t Month, time_t Day, time_t Year,
         return -1;
     Julian += tod;
     ltm = localtime(&Julian);
-#if !defined(__COMPCERT__)
+#if !defined(__COMPCERT__) && !defined(__SVR4)
     fprintf(stderr, "DST %d TZ %s %d\n", DSTmode, ltm->tm_zone, ltm->tm_isdst);
 #else
     fprintf(stderr, "DST %d %d\n", DSTmode, ltm->tm_isdst);
@@ -869,7 +869,7 @@ get_date(char *p)
     yyYear       = tm->tm_year + 1900;
     yyMonth      = tm->tm_mon + 1;
     yyDay        = tm->tm_mday;
-#if !defined(__COMPCERT__)
+#if !defined(__COMPCERT__) && !defined(__SVR4)
     yyTimezone   = tm->tm_gmtoff;
 #endif
     yyDSTmode    = DSTmaybe;
