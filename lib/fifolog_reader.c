@@ -256,7 +256,7 @@ fifolog_reader_process(struct fifolog_reader *fr, off_t from, fifolog_reader_ren
         off_t o = from;
         int i, e;
         time_t t;
-        u_char *p, *q;
+        unsigned char *p, *q;
         z_stream *zs;
 
         CHECK_OBJ_NOTNULL(fr, FIFOLOG_READER_MAGIC);
