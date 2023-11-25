@@ -40,6 +40,7 @@
 # include <libutil.h>
 #endif
 
+#include "expand_number.h"
 #include "libfifolog.h"
 
 #define DEF_RECSIZE     512
@@ -52,8 +53,6 @@ usage(void)
             "[-r record-count] [-s size] file\n");
         exit(EX_USAGE);
 }
-
-int expand_number(const char *buf, uint64_t *num);
 
 int
 main(int argc, char * const *argv)
