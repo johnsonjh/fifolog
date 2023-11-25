@@ -65,8 +65,7 @@ out/bin/fifolog_writer: out/src/getdate.c fifolog_writer/fifolog_writer.c $(LIBS
 
 out/src/getdate.c: lib/getdate.y
 	@mkdir -p $(@D)
-	@{ command -v byacc > /dev/null 2>&1 && "$$(command -v byacc)" $< -o $@; } || \
-	 { command -v bison > /dev/null 2>&1 && "$$(command -v bison)" -Wnone $< -o $@; } || \
+	@{ command -v bison > /dev/null 2>&1 && "$$(command -v bison)" -Wnone $< -o $@; } || \
 	 { command -v yacc  > /dev/null 2>&1 && "$$(command -v yacc)" $< -o $@; } || \
 	 { printf '%s\n' "*** Error: yacc $< failed."; exit 1; }
 
