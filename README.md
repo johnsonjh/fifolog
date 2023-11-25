@@ -3,7 +3,7 @@
 <!-- Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com> -->
 # fifolog
 
-*fifolog*: compact round-robin circular storage
+&nbsp;*fifolog* — compact round-robin circular storage
 
 ---
 
@@ -119,22 +119,18 @@ regular log files rotated with `newsyslog`(`8`) etc.
 
 ## EXAMPLES
 
-Create a *fifolog* with 1024*1024 records of 512 bytes:
+* Create a *fifolog* with 1024*1024 records of 512 bytes:<br>
+  `fifolog_create -r 10m /tmp/fifolog`
 
-`fifolog_create -r 10m /tmp/fifolog`
+* Write a single record to this file:<br>
+  `date | fifolog_writer /tmp/fifolog`
 
-Write a single record to this file:
+* Read it back with human readable timestamps:<br>
+  `fifolog_reader -t /tmp/fifolog`
 
-`date | fifolog_writer /tmp/fifolog`
-
-Read it back with human readable timestamps:
-
-`fifolog_reader -t /tmp/fifolog`
-
-One particular useful use of `fifolog_writer` is with `syslogd`(`8`)
-using a line such as this in `syslog.conf`(`5`):
-
-`*.* |fifolog_writer /var/log/syslog_fifolog`
+* One particular useful use of `fifolog_writer` is with `syslogd`(`8`)
+  using a line such as this in `syslog.conf`(`5`):<br>
+  `*.* |fifolog_writer /var/log/syslog_fifolog`
 
 ## HISTORY
 
