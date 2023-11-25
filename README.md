@@ -142,7 +142,7 @@ Control system.
 ## BUILD
 
 Portable *fifolog* is known to build and work on FreeBSD, macOS,
-and GNU/Linux systems.
+and Linux systems using GCC, Clang, NVIDIA HPC SDK C, and CompCert-C.
 
 * Build using *GNU Make* and system zlib:<br>
   `make`

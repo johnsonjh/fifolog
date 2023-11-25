@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include <sys/types.h>
+
 struct fifolog_file {
         unsigned                        magic;
 #define FIFOLOG_FILE_MAGIC              0x307ea50d
