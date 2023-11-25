@@ -32,7 +32,14 @@ SHELL   := $(shell env PATH="$$(command -p getconf PATH)" command -v sh)
 LIBSRC  := $(strip $(wildcard lib/*.c) $(wildcard util/*.c))
 LTOFLAG ?= -flto=auto
 CFLAGS  += -Ilib -Iutil -O3 $(LTOFLAG)
-LDFLAGS += -lz $(LTOFLAG)
+LDFLAGS += $(LTOFLAG)
+
+ifeq ($(USE_MINIZ),1)
+  CFLAGS += -Iminiz -DUSE_MINIZ=1
+  LIBSRC += miniz/miniz.c
+else
+  LDFLAGS += -lz
+endif
 
 .PHONY: all
 all:
@@ -41,41 +48,51 @@ all:
 out/bin/fifolog_create: out/src/getdate.c fifolog_create/fifolog_create.c $(LIBSRC)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -o $@ out/src/getdate.c fifolog_create/fifolog_create.c $(LIBSRC) $(LDFLAGS)
+	@ls -l $@ || true
+	@printf '%s\n' "*** $@ built successfully." || true
 
 out/bin/fifolog_reader: out/src/getdate.c fifolog_reader/fifolog_reader.c $(LIBSRC)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -o $@ out/src/getdate.c fifolog_reader/fifolog_reader.c $(LIBSRC) $(LDFLAGS)
+	@ls -l $@ || true
+	@printf '%s\n' "*** $@ built successfully." || true
 
 out/bin/fifolog_writer: out/src/getdate.c fifolog_writer/fifolog_writer.c $(LIBSRC)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -o $@ out/src/getdate.c fifolog_writer/fifolog_writer.c $(LIBSRC) $(LDFLAGS)
+	@ls -l $@ || true
+	@printf '%s\n' "*** $@ built successfully." || true
 
 out/src/getdate.c: lib/getdate.y
 	@mkdir -p $(@D)
 	@{ command -v byacc > /dev/null 2>&1 && "$$(command -v byacc)" $< -o $@; } || \
 	 { command -v bison > /dev/null 2>&1 && "$$(command -v bison)" -Wnone $< -o $@; } || \
 	 { command -v yacc  > /dev/null 2>&1 && "$$(command -v yacc)" $< -o $@; } || \
-	 { printf '%s\n' "Error: yacc $< failed."; exit 1; }
+	 { printf '%s\n' "*** Error: yacc $< failed."; exit 1; }
 
 .PHONY: test
-test: all
+test:
+	@test -f out/bin/fifolog_create || \
+	 { printf '%s\n' "*** Error: Missing fifolog_create."; exit 1; }
+	@test -f out/bin/fifolog_reader || \
+	 { printf '%s\n' "*** Error: Missing fifolog_reader."; exit 1; }
+	@test -f out/bin/fifolog_writer || \
+	 { printf '%s\n' "*** Error: Missing fifolog_writer."; exit 1; }
 	@rm -rf ./out/test
 	@mkdir -p out/test
 	@printf '%s\n' "" || true
 	out/bin/fifolog_create -s 10M out/test/test.log && test -f out/test/test.log
-	@printf '%s\n' "" || true
 	ls -l out/test/test.log
 	@printf '%s\n' "" || true
 	printf '%s\n' "Verification 1" | out/bin/fifolog_writer out/test/test.log
-	@printf '%s\n' "" || true
 	out/bin/fifolog_reader -t out/test/test.log 2>&1 | tee /dev/stderr | grep -q " Verification 1$$"
 	@printf '%s\n' "" || true
 	printf '%s\n' "Verification 2" | out/bin/fifolog_writer out/test/test.log
+	out/bin/fifolog_reader -t out/test/test.log 2>&1 | tee /dev/stderr | tail -1 | grep -q " Verification 2$$"
 	@printf '%s\n' "" || true
-	out/bin/fifolog_reader -t out/test/test.log 2>&1 | tee /dev/stderr | grep -q " Verification 2$$"
+	out/bin/fifolog_reader -t out/test/test.log 2>&1 | tee /dev/stderr | tail -2 | head -1 | grep -q " Verification 1$$"
 	@printf '%s\n' "" || true
-	out/bin/fifolog_reader -t out/test/test.log 2>&1
-	@printf '%s\n' "" || true
+	@printf '%s\n' "*** Tests completed successfully." || true
 
 .PHONY: clean
 clean:
