@@ -37,6 +37,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#if defined(__FreeBSD__)
+# include <sys/disk.h>
+#endif
 
 #include "be32.h"
 #include "fifolog.h"
