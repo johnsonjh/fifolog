@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: BSD-2-Clause -->
 <!-- Copyright (c) 2005-2008 Poul-Henning Kamp -->
 <!-- Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com> -->
-# fifolog
+# Portable fifolog
 
-&nbsp;*fifolog* — compact round-robin circular storage
+&nbsp;Portable [*fifolog*](https://cgit.freebsd.org/src/tree/usr.sbin/fifolog) — compact round-robin circular storage
 
 ---
 
@@ -16,6 +16,7 @@
 - [Examples](#examples)
 - [History](#history)
 - [Build](#build)
+- [Test](#test)
 - [Authors](#authors)
 
 <!-- tocstop -->
@@ -142,10 +143,13 @@ Control system.
 ## BUILD
 
 Portable *fifolog* is known to build and work on AIX, FreeBSD, macOS,
-Solaris, illumos, Haiku, Cygwin, and Linux systems using GCC, Clang,
-NVIDIA HPC SDK C, IBM XL C, IBM Open XL C, and CompCert-C.
+Solaris, illumos, Haiku, Cygwin, and Linux (glibc, musl, uClibc-ng,
+Bionic) systems using GCC, Clang, NVIDIA HPC SDK C, IBM XL C, IBM
+Open XL C, and CompCert-C.
 
 GNU Bison or Berkeley Yacc is required.
+
+Review the [GNUmakefile](GNUmakefile) for complete details.
 
 * Build using *GNU Make* and system zlib:<br>
   `make`
@@ -153,7 +157,9 @@ GNU Bison or Berkeley Yacc is required.
 * Build using *GNU Make* and bundled miniz:<br>
   `make USE_MINIZ=1`
 
-* Test compiled binaries:<br>
+## TEST
+
+* Run tests:<br>
   `make test`
 
 ## AUTHORS
