@@ -133,6 +133,6 @@ main(int argc, char * const *argv)
         s = fifolog_create(argv[0], size, recsize);
         if (s == NULL)
                 return (0);
-        fprintf(stderr, "Error: %s: %s\n", s, strerror(errno));
+        fprintf(stderr, "Error: %s\n", strerror(errno));
         exit(1);
 }

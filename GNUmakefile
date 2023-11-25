@@ -70,13 +70,7 @@ out/src/getdate.c: lib/getdate.y
 	 { printf '%s\n' "*** Error: yacc $< failed."; exit 1; }
 
 .PHONY: check test
-check test:
-	@test -f out/bin/fifolog_create || \
-	 { printf '%s\n' "*** Error: Missing fifolog_create."; exit 1; }
-	@test -f out/bin/fifolog_reader || \
-	 { printf '%s\n' "*** Error: Missing fifolog_reader."; exit 1; }
-	@test -f out/bin/fifolog_writer || \
-	 { printf '%s\n' "*** Error: Missing fifolog_writer."; exit 1; }
+check test: all
 	@rm -rf ./out/test
 	@mkdir -p out/test
 	out/bin/fifolog_create -s 10M out/test/test.log && test -f out/test/test.log

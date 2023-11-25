@@ -99,7 +99,7 @@ main(int argc, char * const *argv)
 
         es = fifolog_write_open(f, argv[0], w_opt, s_opt, z_opt);
         if (es) {
-                fprintf(stderr, "Error: %s: %s\n", es, strerror(errno));
+                fprintf(stderr, "Error: %s\n", strerror(errno));
                 exit(1);
         }
 

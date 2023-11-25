@@ -72,7 +72,7 @@ fifolog_reader_open(const char *fname)
 
         retval = fifolog_int_open(&fr->ff, fname, 0);
         if (retval != NULL) {
-                fprintf(stderr, "Error: %s: %s\n", retval, strerror(errno));
+                fprintf(stderr, "Error: %s\n", strerror(errno));
                 exit(1);
         }
 
@@ -171,7 +171,7 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
                 /* Check if there is a second older part we can use */
                 retval = fifolog_int_findend(fr->ff, &s);
                 if (retval != NULL) {
-                        fprintf(stderr, "Error: %s: %s\n", retval, strerror(errno));
+                        fprintf(stderr, "Error: %s\n", strerror(errno));
                         exit(1);
                 }
                 s++;
