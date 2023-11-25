@@ -205,7 +205,7 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
                 o += st;
                 seq = seqs;
         }
-        fprintf(stderr, "Read from %jx\n", o * fr->ff->recsize);
+        fprintf(stderr, "Read from %llx\n", o * (long long)fr->ff->recsize);
         return (o);
 }
 
