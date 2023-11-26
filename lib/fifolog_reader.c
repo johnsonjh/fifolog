@@ -113,7 +113,7 @@ fifolog_reader_findsync(const struct fifolog_file *ff, off_t *o)
                 fprintf(stderr, "Error: Read error (%d) while looking for SYNC: %s\n", e, strerror(errno));
                 exit(1);
         }
-        seq = be32dec(ff->recbuf);
+        seq = _fifolog_be32dec(ff->recbuf);
         if (*o == 0 && seq == 0)
                 return (0);
 
@@ -130,7 +130,7 @@ fifolog_reader_findsync(const struct fifolog_file *ff, off_t *o)
                         fprintf(stderr, "Error: Read error (%d) while looking for SYNC: %s\n", e, strerror(errno));
                         exit(1);
                 }
-                seqs = be32dec(ff->recbuf);
+                seqs = _fifolog_be32dec(ff->recbuf);
                 if (seqs != seq)
                         return (3); /* End of log */
                 if (ff->recbuf[4] & FIFOLOG_FLG_SYNC)
@@ -164,8 +164,8 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
         assert(e == 1);
 
         assert(fr->ff->recbuf[4] & FIFOLOG_FLG_SYNC);
-        seq = be32dec(fr->ff->recbuf);
-        t = be32dec(fr->ff->recbuf + 5);
+        seq = _fifolog_be32dec(fr->ff->recbuf);
+        t = _fifolog_be32dec(fr->ff->recbuf + 5);
 
         if (t > t0) {
                 /* Check if there is a second older part we can use */
@@ -180,8 +180,8 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
                         return (0); /* empty fifolog */
                 if (e == 1) {
                         o = s;
-                        seq = be32dec(fr->ff->recbuf);
-                        t = be32dec(fr->ff->recbuf + 5);
+                        seq = _fifolog_be32dec(fr->ff->recbuf);
+                        t = _fifolog_be32dec(fr->ff->recbuf + 5);
                 }
         }
 
@@ -199,7 +199,7 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
                         continue;
                 }
                 /* If not in same part, sequence won't match */
-                seqs = be32dec(fr->ff->recbuf);
+                seqs = _fifolog_be32dec(fr->ff->recbuf);
                 if (seqs != seq + st) {
                         s = st = s / 2;
                         continue;
@@ -210,7 +210,7 @@ fifolog_reader_seek(const struct fifolog_reader *fr, time_t t0)
                         continue;
                 }
                 /* Check timestamp */
-                tt = be32dec(fr->ff->recbuf + 5);
+                tt = _fifolog_be32dec(fr->ff->recbuf + 5);
                 if (tt >= t0) {
                         s = st = s / 2;
                         continue;
@@ -236,9 +236,9 @@ fifolog_reader_chop(struct fifolog_reader *fr, fifolog_reader_render_t *func, vo
                 if (p + 5 >= q)
                         return (p);
                 w = 4;
-                u = be32dec(p);
+                u = _fifolog_be32dec(p);
                 if (u & FIFOLOG_TIMESTAMP) {
-                        fr->now = be32dec(p + 4);
+                        fr->now = _fifolog_be32dec(p + 4);
                         w += 4;
                 }
                 if (u & FIFOLOG_LENGTH) {
@@ -283,7 +283,7 @@ fifolog_reader_process(struct fifolog_reader *fr, off_t from, fifolog_reader_ren
                 }
                 if (++o >= fr->ff->logsize)
                         o = 0;
-                seq = be32dec(fr->ff->recbuf);
+                seq = _fifolog_be32dec(fr->ff->recbuf);
                 if (lseq != 0 && seq != lseq + 1)
                         break;
                 lseq = seq;
@@ -293,13 +293,13 @@ fifolog_reader_process(struct fifolog_reader *fr, off_t from, fifolog_reader_ren
                         zs->avail_in -= fr->ff->recbuf[fr->ff->recsize - 1];
                 if (fr->ff->recbuf[4] & FIFOLOG_FLG_4BYTE)
                         zs->avail_in -=
-                            be32dec(fr->ff->recbuf + fr->ff->recsize - 4);
+                            _fifolog_be32dec(fr->ff->recbuf + fr->ff->recsize - 4);
                 if (fr->ff->recbuf[4] & FIFOLOG_FLG_SYNC) {
                         i = inflateReset(zs);
                         assert(i == Z_OK);
                         zs->next_out = fr->obuf;
                         zs->avail_out = fr->olen;
-                        t = be32dec(fr->ff->recbuf + 5);
+                        t = _fifolog_be32dec(fr->ff->recbuf + 5);
                         if (t > end)
                                 break;
                         zs->next_in += 4;

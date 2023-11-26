@@ -117,7 +117,7 @@ fifolog_create(const char *fn, off_t size, ssize_t recsize)
                 return ("Could not malloc");
 
         strcpy(buf, FIFOLOG_FMT_MAGIC); /*lint !e64 */
-        be32enc(buf + FIFOLOG_OFF_BS, recsize);
+        _fifolog_be32enc(buf + FIFOLOG_OFF_BS, recsize);
         if (recsize != pwrite(fd, buf, recsize, 0)) {
                 i = errno;
                 free(buf);

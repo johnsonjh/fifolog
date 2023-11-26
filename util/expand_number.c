@@ -34,13 +34,10 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <sys/types.h>
-#if defined(__FreeBSD__)
-# include <libutil.h>
-#endif
 #include <stdint.h>
 
 int
-expand_number (const char *buf, uint64_t *num)
+_fifolog_expand_number (const char *buf, uint64_t *num)
 {
   char*     endptr;
   uintmax_t umaxval;

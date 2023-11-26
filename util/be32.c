@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2005-2008 Poul-Henning Kamp
+ * Copyright (c) 2023 Jeffrey H. Johnson <trnsz@pobox.com>
  *
  * All rights reserved.
  *
@@ -32,7 +33,7 @@
 #include <stdint.h>
 
 void
-be32enc (void *pp, uint32_t u)
+_fifolog_be32enc (void *pp, uint32_t u)
 {
   unsigned char *p = (unsigned char *)pp;
 
@@ -43,7 +44,7 @@ be32enc (void *pp, uint32_t u)
 }
 
 uint32_t
-be32dec (const void *pp)
+_fifolog_be32dec (const void *pp)
 {
   unsigned char const *p = (unsigned char const *)pp;
 

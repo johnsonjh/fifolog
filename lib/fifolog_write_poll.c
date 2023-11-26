@@ -153,7 +153,7 @@ fifolog_write_open(struct fifolog_writer *f, const char *fn,
         i = fifolog_int_read(f->ff, o);
         if (i)
                 return ("Read error, looking for seq");
-        f->seq = be32dec(f->ff->recbuf);
+        f->seq = _fifolog_be32dec(f->ff->recbuf);
         if (f->seq == 0) {
                 /* Empty fifolog */
                 f->seq = random();
@@ -199,11 +199,11 @@ fifolog_write_output(struct fifolog_writer *f, int fl, time_t now)
         int retval = 0;
 
         h = 4; /* seq */
-        be32enc(f->obuf, f->seq);
+        _fifolog_be32enc(f->obuf, f->seq);
         f->obuf[h] = f->flag;
         h += 1; /* flag */
         if (f->flag & FIFOLOG_FLG_SYNC) {
-                be32enc(f->obuf + h, now);
+                _fifolog_be32enc(f->obuf + h, now);
                 h += 4; /* timestamp */
         }
 
@@ -219,7 +219,7 @@ fifolog_write_output(struct fifolog_writer *f, int fl, time_t now)
 
         w = f->ff->recsize - l;
         if (w >  255) {
-                be32enc(f->obuf + f->ff->recsize - 4, w);
+                _fifolog_be32enc(f->obuf + f->ff->recsize - 4, w);
                 f->obuf[4] |= FIFOLOG_FLG_4BYTE;
         } else if (w > 0) {
                 f->obuf[f->ff->recsize - 1] = (uint8_t)w;
@@ -360,11 +360,11 @@ fifolog_write_record(struct fifolog_writer *f, uint32_t id, time_t now,
                 id |= FIFOLOG_TIMESTAMP;
 
         /* Emit instance+flag */
-        be32enc(buf, id);
+        _fifolog_be32enc(buf, id);
         bufl = 4;
 
         if (id & FIFOLOG_TIMESTAMP) {
-                be32enc(buf + bufl, (uint32_t)now);
+                _fifolog_be32enc(buf + bufl, (uint32_t)now);
                 bufl += 4;
         }
         if (id & FIFOLOG_LENGTH)

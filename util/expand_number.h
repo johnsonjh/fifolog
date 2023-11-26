@@ -32,4 +32,4 @@
 
 #include <stdint.h>
 
-int expand_number (const char *buf, uint64_t *num);
+int _fifolog_expand_number (const char *buf, uint64_t *num);

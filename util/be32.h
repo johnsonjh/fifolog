@@ -32,5 +32,5 @@
 
 #include <stdint.h>
 
-void be32enc (void *pp, uint32_t u);
-uint32_t be32dec (const void *pp);
+void _fifolog_be32enc (void *pp, uint32_t u);
+uint32_t _fifolog_be32dec (const void *pp);

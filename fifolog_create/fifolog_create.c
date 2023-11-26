@@ -36,9 +36,6 @@
 #include <errno.h>
 #include <string.h>
 #include <getopt.h>
-#if defined(__FreeBSD__)
-# include <libutil.h>
-#endif
 
 #include "expand_number.h"
 #include "libfifolog.h"
@@ -69,19 +66,19 @@ main(int argc, char * const *argv)
         while((ch = getopt(argc, argv, "l:r:s:")) != -1) {
                 switch (ch) {
                 case 'l':
-                        if (expand_number(optarg, &recsize)) {
+                        if (_fifolog_expand_number(optarg, &recsize)) {
                                 fprintf(stderr, "Error: Couldn't parse -l argument\n");
                                 exit(1);
                         }
                         break;
                 case 'r':
-                        if (expand_number(optarg, &reccnt)) {
+                        if (_fifolog_expand_number(optarg, &reccnt)) {
                                 fprintf(stderr, "Error: Couldn't parse -r argument\n");
                                 exit(1);
                         }
                         break;
                 case 's':
-                        if (expand_number(optarg, &size)) {
+                        if (_fifolog_expand_number(optarg, &size)) {
                                 fprintf(stderr, "Error: Couldn't parse -s argument\n");
                                 exit(1);
                         }

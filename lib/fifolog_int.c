@@ -118,7 +118,7 @@ fifolog_int_open_i(struct fifolog_file *f, const char *fname, int mode)
         if (memcmp(f->recbuf, FIFOLOG_FMT_MAGIC, strlen(FIFOLOG_FMT_MAGIC) + 1))
                 return ("Wrong or missing magic string");
 
-        u = be32dec(f->recbuf + FIFOLOG_OFF_BS);
+        u = _fifolog_be32dec(f->recbuf + FIFOLOG_OFF_BS);
         if (u < 64)
                 return ("Wrong record size in header (<64)");
 
@@ -247,7 +247,7 @@ fifolog_int_findend(const struct fifolog_file *ff, off_t *last)
         if (e)
                 return("Read error, first record");
 
-        seq0 = be32dec(ff->recbuf);
+        seq0 = _fifolog_be32dec(ff->recbuf);
 
         /* If the first records sequence is zero, the fifolog is empty */
         if (seq0 == 0) {
@@ -261,7 +261,7 @@ fifolog_int_findend(const struct fifolog_file *ff, off_t *last)
                 e = fifolog_int_read(ff, o + s);
                 if (e)
                         return ("Read error while searching");
-                seq = be32dec(ff->recbuf);
+                seq = _fifolog_be32dec(ff->recbuf);
                 if (seq == seq0 + s) {
                         o += s;
                         seq0 = seq;
