@@ -31,21 +31,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sysexits.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <ctype.h>
 #include <assert.h>
 #include <poll.h>
 #include <string.h>
 #include <errno.h>
-#include <getopt.h>
 #if !defined(USE_MINIZ)
 # include <zlib.h>
 #else
 # include <miniz.h>
 #endif
 
-#include "libfifolog.h"
+#include "fifolog_write.h"
 
 static void
 usage(void)
@@ -53,7 +52,7 @@ usage(void)
         fprintf(stderr,
             "Usage: fifolog_writer [-w write-rate] [-s sync-rate] "
             "[-z compression] file\n");
-        exit(EX_USAGE);
+        exit(0);
 }
 
 int

@@ -31,11 +31,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sysexits.h>
+#include <stdint.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <errno.h>
 #include <string.h>
-#include <getopt.h>
 
 #include "expand_number.h"
 #include "libfifolog.h"
@@ -48,7 +48,7 @@ usage(void)
 {
         fprintf(stderr, "Usage: fifolog_create [-l record-size] "
             "[-r record-count] [-s size] file\n");
-        exit(EX_USAGE);
+        exit(0);
 }
 
 int

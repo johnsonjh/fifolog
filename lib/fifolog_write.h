@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include <stdint.h>
+
 #define FIFOLOG_PT_BYTES_PRE            0
 #define FIFOLOG_PT_BYTES_POST           1
 #define FIFOLOG_PT_WRITES               2

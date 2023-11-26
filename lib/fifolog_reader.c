@@ -30,6 +30,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <assert.h>
 #include <time.h>

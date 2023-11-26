@@ -30,12 +30,12 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <assert.h>
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sysexits.h>
 #include <regex.h>
 #include <errno.h>
 #include <getopt.h>
@@ -93,7 +93,7 @@ Usage(void)
                 "\t-t # format timestamps as %%Y%%m%%d%%H%%M%%S\n"
                 "\t-T <timestamp format>\n"
         );
-        exit (EX_USAGE);
+        exit(0);
 }
 
 int
