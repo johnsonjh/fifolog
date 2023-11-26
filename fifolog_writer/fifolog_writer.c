@@ -44,7 +44,7 @@
 # include <miniz.h>
 #endif
 
-#include "fifolog_write.h"
+#include "libfifolog.h"
 
 static void
 usage(void)
