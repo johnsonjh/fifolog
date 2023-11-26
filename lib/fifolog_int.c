@@ -147,7 +147,7 @@ fifolog_int_open_i(struct fifolog_file *f, const char *fname, int mode)
         /* Initialize zlib handling */
         f->zs = calloc(1, sizeof(*f->zs));
         if (f->zs == NULL)
-                return ("cannot malloc");
+                return ("Cannot malloc");
 
         return (NULL);
 }
